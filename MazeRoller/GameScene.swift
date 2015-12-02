@@ -17,18 +17,27 @@ enum CollisionTypes: UInt32 {
 }
 
 class GameScene: SKScene {
-    var hero = SKSpriteNode(imageNamed: "ball")
+    var hero = SKSpriteNode!()
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         self.backgroundColor = UIColor.blackColor()
-        constructScene()
         
+        constructScene()
+        createPlayer()
     }
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
     }
+    
+    func createPlayer() {
+        hero = SKSpriteNode(imageNamed: "ball")
+        hero.position = CGPoint(x: 64, y: 640)
+        
+        addChild(hero)
+        
+    }//end of create player
     
     func constructScene() {
         if let scenePath = NSBundle.mainBundle().pathForResource("level1", ofType: "txt"){
