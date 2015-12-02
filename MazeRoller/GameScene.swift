@@ -17,7 +17,7 @@ enum CollisionTypes: UInt32 {
 }
 
 class GameScene: SKScene {
-    
+    var hero = SKSpriteNode(imageNamed: "ball")
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
