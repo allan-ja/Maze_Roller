@@ -17,10 +17,13 @@ enum CollisionTypes: UInt32 {
 }
 
 class GameScene: SKScene {
+    
+    
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         self.backgroundColor = UIColor.blackColor()
         constructScene()
+        
     }
    
     override func update(currentTime: CFTimeInterval) {
