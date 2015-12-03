@@ -11,7 +11,7 @@ import SpriteKit
 enum CollisionTypes: UInt32 {
     case Hero = 1
     case Wall = 2
-    case Vortex = 8
+    case Token = 8
     case Finish = 16
     //add vortex token enum
 }
@@ -60,9 +60,24 @@ class GameScene: SKScene {
                             
                             addChild(node)
                             
-                        }else if letter == "v"{
-                            //load vortex
-                        }//end of if letter v
+                        }else if letter == "s"{
+                            //load star point token
+                            let node = SKSpriteNode(imageNamed: "star")
+                            node.name = "star"
+                            node.physicsBody = SKPhysicsBody(circleOfRadius: node.size.width / 2)
+                            node.physicsBody?.dynamic = false
+                            
+                            node.physicsBody?.categoryBitMask = CollisionTypes.Token.rawValue
+                            node.physicsBody?.collisionBitMask = 0
+                            node.physicsBody?.contactTestBitMask = CollisionTypes.Hero.rawValue
+                            
+                            node.position = position
+                            addChild(node)
+                        }//end of if letter s
+                        else if letter == "f"{
+                            //load finish point
+                            
+                        }//end of if letter f
                     }//end of letter load
                 }
             }
