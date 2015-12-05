@@ -20,9 +20,33 @@ enum CollisionTypes: UInt32 {
     //add vortex token enum
 }
 
-class MazeScene: SKScene {
+class MazeScene: SKScene, SKPhysicsContactDelegate {
     var hero = SKSpriteNode!()
     var spriteView = SKView!()
+
+    
+    //score
+    var gameOver = false
+    
+    var scoreLabel: SKLabelNode!
+    
+    var score: Int = 0 {
+
+        didSet {
+            scoreLabel.text = "Score \(score)"
+        }
+    }
+    
+    var timer:NSTimer?;
+    var seconds:Int = 0;
+    var timeLabel: SKLabelNode!
+    var time: Int = 0 {
+        
+        didSet {
+            timeLabel.text = "Time \(time)"
+        }
+    }
+
     
     var wallSize: CGSize {
         let width = CGRectGetWidth(self.frame) / 32
@@ -42,12 +66,77 @@ class MazeScene: SKScene {
         spriteView = view
         constructScene()
         createPlayer()
+        
+        scoreLabel = SKLabelNode (fontNamed: "Arial")
+        scoreLabel.text = "Score: 0"
+        scoreLabel.horizontalAlignmentMode = .Left
+        scoreLabel.position = CGPoint(x: 10,y: 8)
+        scoreLabel.fontColor = UIColor.redColor()
+        
+        
+        addChild(scoreLabel)
+        
+        //timer code
+        timeLabel = SKLabelNode (fontNamed: "Arial")
+        timeLabel.text = "Score: 0"
+        timeLabel.horizontalAlignmentMode = .Left
+        timeLabel.position = CGPoint(x: 200,y: 8)
+        timeLabel.fontColor = UIColor.redColor()
+        
+        addChild(timeLabel)
+
+        
+        physicsWorld.gravity = CGVector(dx: 0, dy: 0)
+        physicsWorld.contactDelegate = self
+        
     }
     
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+        if !gameOver {
+            //keep moving
+            if(timer == nil)
+            {
+                timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target:self, selector:Selector("onUpdateTimer"), userInfo:nil, repeats:true);
+            }
+            
+        }
     }
     
+    
+    //timer function
+    func updateTimeLabel()
+    {
+        if(timeLabel != nil)
+        {
+            let min:Int = (seconds / 60) % 60;
+            let sec:Int = seconds % 60;
+            
+            let min_p:String = String(format: "%02d", min);
+            let sec_p:String = String(format: "%02d", sec);
+            
+            timeLabel!.text = "\(min_p):\(sec_p)";
+        }
+    }
+    
+    func onUpdateTimer() -> Void
+    {
+        if(seconds >= 0)
+        {
+            seconds++;
+            
+            updateTimeLabel();
+        }
+        /*else if(seconds == 0)
+        {
+            if(timer != nil)
+            {
+                timer!.invalidate();
+                timer = nil;  
+            }   
+        }  */
+    }
+    //end timer code
     
     func createPlayer() {
         hero = SKSpriteNode(imageNamed: "ball")
@@ -113,4 +202,37 @@ class MazeScene: SKScene {
         }//end of if scenePath
     }
     
+    func didBeginTouch(contact: SKPhysicsContact){
+        if contact.bodyA.node == hero {
+            heroTouchToNode(contact.bodyB.node!)
+        }else if contact.bodyB.node == hero {
+            heroTouchToNode(contact.bodyA.node!)
+        }
+    }
+    
+    
+    func heroTouchToNode(node: SKNode) {
+        if node == "vortex" {
+            hero.physicsBody?.dynamic = false
+            gameOver = true
+            score -= 1
+            
+            let move =  SKAction.moveTo(node.position, duration: 0.25)
+            let scale = SKAction.scaleTo(0.0001, duration: 0.25)
+            let remove = SKAction.removeFromParent()
+            
+            let sequance = SKAction.sequence([move,scale,remove])
+            
+            hero.runAction(sequance) { [unowned self] in
+                self.createPlayer()
+                self.gameOver = false
+            }
+        }else if node.name == "star" {
+            node.removeFromParent()
+            ++score
+        }else if node.name == "finish" {
+            //game finished
+        }
+    }
+   
 }

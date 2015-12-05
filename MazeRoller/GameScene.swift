@@ -20,7 +20,7 @@ class GameScene: SKScene {
         self.playbutton.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
         self.addChild(playbutton)
         
-        self.backgroundColor = UIColor(colorLiteralRed: 255, green: 255, blue: 255, alpha: 0)
+        self.backgroundColor = UIColor(colorLiteralRed: 255, green: 0, blue: 255, alpha: 0)
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -35,10 +35,10 @@ class GameScene: SKScene {
                 scene.size = skView.bounds.size
                 skView.presentScene(scene)
                 
-            }
+            }//playbutton tapped
             
             
-        }
+        }//end of for touch
     }
     
     override func update(currentTime: CFTimeInterval) {
