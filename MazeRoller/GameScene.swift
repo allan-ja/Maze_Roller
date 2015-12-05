@@ -7,22 +7,38 @@
 //
 
 import SpriteKit
+import CoreMotion
+
 
 enum CollisionTypes: UInt32 {
     case Hero = 1
     case Wall = 2
-    case Token = 8
-    case Finish = 16
+    case Token = 4
+    case Finish = 8
+    case Start = 16
     //add vortex token enum
 }
 
 class GameScene: SKScene {
     var hero = SKSpriteNode!()
+    var spriteView = SKView!()
+    
+    var wallSize: CGSize {
+        let width = CGRectGetWidth(self.frame) / 32
+        let height = CGRectGetHeight(self.frame) / 24
+        
+        /* Use for debugging
+        let widthSP = spriteView.bounds.width // 32
+        let heightSP = spriteView.bounds.height // 24
+        print("Frame size", width, height)
+        print("SP size", widthSP, heightSP)*/
+        return CGSize(width: width, height: height)
+    }
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
-        self.backgroundColor = UIColor.blackColor()
         
+        spriteView = view
         constructScene()
         createPlayer()
     }
@@ -31,27 +47,39 @@ class GameScene: SKScene {
         /* Called before each frame is rendered */
     }
     
+    
     func createPlayer() {
         hero = SKSpriteNode(imageNamed: "ball")
+        hero.physicsBody = SKPhysicsBody(circleOfRadius: hero.size.width / 2)
+        hero.physicsBody?.categoryBitMask = CollisionTypes.Hero.rawValue
+        hero.physicsBody?.collisionBitMask = CollisionTypes.Wall.rawValue
+        hero.physicsBody?.contactTestBitMask = CollisionTypes.Token.rawValue | CollisionTypes.Finish.rawValue
+        
+        
         hero.position = CGPoint(x: 64, y: 640)
         
         addChild(hero)
         
-    }//end of create player
+    }
     
     func constructScene() {
-        if let scenePath = NSBundle.mainBundle().pathForResource("level1", ofType: "txt"){
+        self.backgroundColor = UIColor.whiteColor()
+        
+        if let scenePath = NSBundle.mainBundle().pathForResource("level2", ofType: "txt"){
             if let levelString = try? NSString(contentsOfFile: scenePath, encoding: NSUTF8StringEncoding){
                 let lines = levelString.componentsSeparatedByString("\n") as [String]
                 
                 for (row,line) in lines.reverse().enumerate() {
                     let line2 = line.characters
                     for (column,letter) in line2.enumerate() {
-                        let position = CGPoint(x: (32 * column) + 16 ,y: (32 * row) + 16)
+                        let xPosition = CGFloat(column) * wallSize.width + wallSize.width/2
+                        let yPosition = CGFloat(row) * wallSize.height + wallSize.height/2
+                        let position = CGPoint(x: xPosition ,y: yPosition)
                         
                         if letter == "x" {
                             //load wall
-                            let node = SKSpriteNode(imageNamed: "wall")
+                            //let node = SKSpriteNode(imageNamed: "wall")
+                            let node = SKSpriteNode(color: UIColor.grayColor(), size: wallSize)
                             node.position = position
                             
                             node.physicsBody = SKPhysicsBody(rectangleOfSize: node.size)
@@ -60,7 +88,7 @@ class GameScene: SKScene {
                             
                             addChild(node)
                             
-                        }else if letter == "s"{
+                        } else if letter == "s"{
                             //load star point token
                             let node = SKSpriteNode(imageNamed: "star")
                             node.name = "star"

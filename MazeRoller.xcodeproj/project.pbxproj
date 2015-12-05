@@ -18,6 +18,7 @@
 		12E20A691C0F4E88006ED093 /* MazeRollerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E20A681C0F4E88006ED093 /* MazeRollerUITests.swift */; };
 		12E20A771C0F4EF8006ED093 /* level1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 12E20A761C0F4EF8006ED093 /* level1.txt */; };
 		12E20A791C0F5048006ED093 /* Supporting Files in Resources */ = {isa = PBXBuildFile; fileRef = 12E20A781C0F5048006ED093 /* Supporting Files */; };
+		8F8B346C1C122297007F4CD3 /* level2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8F8B346B1C122297007F4CD3 /* level2.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,7 @@
 		12E20A6A1C0F4E88006ED093 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		12E20A761C0F4EF8006ED093 /* level1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = level1.txt; sourceTree = "<group>"; };
 		12E20A781C0F5048006ED093 /* Supporting Files */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Supporting Files"; sourceTree = "<group>"; };
+		8F8B346B1C122297007F4CD3 /* level2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = level2.txt; path = ../level2.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				12E20A761C0F4EF8006ED093 /* level1.txt */,
+				8F8B346B1C122297007F4CD3 /* level2.txt */,
 				12E20A441C0F4E88006ED093 /* AppDelegate.swift */,
 				12E20A461C0F4E88006ED093 /* GameScene.sks */,
 				12E20A481C0F4E88006ED093 /* GameScene.swift */,
@@ -245,6 +248,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				12E20A791C0F5048006ED093 /* Supporting Files in Resources */,
+				8F8B346C1C122297007F4CD3 /* level2.txt in Resources */,
 				12E20A771C0F4EF8006ED093 /* level1.txt in Resources */,
 				12E20A471C0F4E88006ED093 /* GameScene.sks in Resources */,
 				12E20A531C0F4E88006ED093 /* LaunchScreen.storyboard in Resources */,
@@ -419,10 +423,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = MazeRoller/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.leedsuni.switfyProject.MazeRoller;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -431,10 +438,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = MazeRoller/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.leedsuni.switfyProject.MazeRoller;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
