@@ -10,106 +10,39 @@ import SpriteKit
 import CoreMotion
 
 
-enum CollisionTypes: UInt32 {
-    case Hero = 1
-    case Wall = 2
-    case Token = 4
-    case Finish = 8
-    case Start = 16
-    //add vortex token enum
-}
-
 class GameScene: SKScene {
-    var hero = SKSpriteNode!()
-    var spriteView = SKView!()
+ 
     
-    var wallSize: CGSize {
-        let width = CGRectGetWidth(self.frame) / 32
-        let height = CGRectGetHeight(self.frame) / 24
-        
-        /* Use for debugging
-        let widthSP = spriteView.bounds.width // 32
-        let heightSP = spriteView.bounds.height // 24
-        print("Frame size", width, height)
-        print("SP size", widthSP, heightSP)*/
-        return CGSize(width: width, height: height)
-    }
+    let playbutton = SKSpriteNode(imageNamed: "playbutton")
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
+        self.playbutton.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+        self.addChild(playbutton)
         
-        spriteView = view
-        constructScene()
-        createPlayer()
+        self.backgroundColor = UIColor(colorLiteralRed: 255, green: 255, blue: 255, alpha: 0)
     }
-   
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        /* Called when a touch begins */
+        
+        for touch: AnyObject in touches {
+            let location = touch.locationInNode(self)
+            if self.nodeAtPoint(location) == self.playbutton {
+                let scene = MazeScene(size = self.size)
+                let skView = self.view! as SKView
+                skView.ignoresSiblingOrder = true
+                scene.size = skView.bounds.size
+                skView.presentScene(scene)
+                
+            }
+            
+            
+        }
+    }
+    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
     }
-    
-    
-    func createPlayer() {
-        hero = SKSpriteNode(imageNamed: "ball")
-        hero.physicsBody = SKPhysicsBody(circleOfRadius: hero.size.width / 2)
-        hero.physicsBody?.categoryBitMask = CollisionTypes.Hero.rawValue
-        hero.physicsBody?.collisionBitMask = CollisionTypes.Wall.rawValue
-        hero.physicsBody?.contactTestBitMask = CollisionTypes.Token.rawValue | CollisionTypes.Finish.rawValue
-        
-        
-        hero.position = CGPoint(x: 64, y: 640)
-        
-        addChild(hero)
-        
-    }
-    
-    func constructScene() {
-        self.backgroundColor = UIColor.whiteColor()
-        
-        if let scenePath = NSBundle.mainBundle().pathForResource("level2", ofType: "txt"){
-            if let levelString = try? NSString(contentsOfFile: scenePath, encoding: NSUTF8StringEncoding){
-                let lines = levelString.componentsSeparatedByString("\n") as [String]
-                
-                for (row,line) in lines.reverse().enumerate() {
-                    let line2 = line.characters
-                    for (column,letter) in line2.enumerate() {
-                        let xPosition = CGFloat(column) * wallSize.width + wallSize.width/2
-                        let yPosition = CGFloat(row) * wallSize.height + wallSize.height/2
-                        let position = CGPoint(x: xPosition ,y: yPosition)
-                        
-                        if letter == "x" {
-                            //load wall
-                            //let node = SKSpriteNode(imageNamed: "wall")
-                            let node = SKSpriteNode(color: UIColor.grayColor(), size: wallSize)
-                            node.position = position
-                            
-                            node.physicsBody = SKPhysicsBody(rectangleOfSize: node.size)
-                            node.physicsBody?.categoryBitMask = CollisionTypes.Wall.rawValue
-                            node.physicsBody?.dynamic = false
-                            
-                            addChild(node)
-                            
-                        } else if letter == "s"{
-                            //load star point token
-                            let node = SKSpriteNode(imageNamed: "star")
-                            node.name = "star"
-                            node.physicsBody = SKPhysicsBody(circleOfRadius: node.size.width / 2)
-                            node.physicsBody?.dynamic = false
-                            
-                            node.physicsBody?.categoryBitMask = CollisionTypes.Token.rawValue
-                            node.physicsBody?.collisionBitMask = 0
-                            node.physicsBody?.contactTestBitMask = CollisionTypes.Hero.rawValue
-                            
-                            node.position = position
-                            addChild(node)
-                        }//end of if letter s
-                        else if letter == "f"{
-                            //load finish point
-                            
-                        }//end of if letter f
-                    }//end of letter load
-                }
-            }
-        }//end of if scenePath
-    }
-    
+
 }

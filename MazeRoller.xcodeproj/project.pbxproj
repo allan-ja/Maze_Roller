@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		12CC8A701C13216D001C25AF /* MazeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CC8A6F1C13216D001C25AF /* MazeScene.swift */; };
 		12E20A451C0F4E88006ED093 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E20A441C0F4E88006ED093 /* AppDelegate.swift */; };
 		12E20A471C0F4E88006ED093 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 12E20A461C0F4E88006ED093 /* GameScene.sks */; };
 		12E20A491C0F4E88006ED093 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E20A481C0F4E88006ED093 /* GameScene.swift */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		12CC8A6F1C13216D001C25AF /* MazeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MazeScene.swift; path = ../MazeScene.swift; sourceTree = "<group>"; };
 		12E20A411C0F4E88006ED093 /* MazeRoller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MazeRoller.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12E20A441C0F4E88006ED093 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		12E20A461C0F4E88006ED093 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 			children = (
 				12E20A761C0F4EF8006ED093 /* level1.txt */,
 				8F8B346B1C122297007F4CD3 /* level2.txt */,
+				12CC8A6F1C13216D001C25AF /* MazeScene.swift */,
 				12E20A441C0F4E88006ED093 /* AppDelegate.swift */,
 				12E20A461C0F4E88006ED093 /* GameScene.sks */,
 				12E20A481C0F4E88006ED093 /* GameScene.swift */,
@@ -279,6 +282,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				12E20A491C0F4E88006ED093 /* GameScene.swift in Sources */,
+				12CC8A701C13216D001C25AF /* MazeScene.swift in Sources */,
 				12E20A4B1C0F4E88006ED093 /* GameViewController.swift in Sources */,
 				12E20A451C0F4E88006ED093 /* AppDelegate.swift in Sources */,
 			);
