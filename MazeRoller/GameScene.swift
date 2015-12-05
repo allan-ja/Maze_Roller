@@ -15,6 +15,7 @@ enum CollisionTypes: UInt32 {
     case Wall = 2
     case Token = 4
     case Finish = 8
+    case Start = 16
     //add vortex token enum
 }
 
@@ -25,7 +26,12 @@ class GameScene: SKScene {
     var wallSize: CGSize {
         let width = CGRectGetWidth(self.frame) / 32
         let height = CGRectGetHeight(self.frame) / 24
-        print(width, height)
+        
+        /* Use for debugging
+        let widthSP = spriteView.bounds.width // 32
+        let heightSP = spriteView.bounds.height // 24
+        print("Frame size", width, height)
+        print("SP size", widthSP, heightSP)*/
         return CGSize(width: width, height: height)
     }
     
@@ -34,7 +40,7 @@ class GameScene: SKScene {
         
         spriteView = view
         constructScene()
-        //createPlayer()
+        createPlayer()
     }
    
     override func update(currentTime: CFTimeInterval) {
@@ -65,9 +71,7 @@ class GameScene: SKScene {
                 
                 for (row,line) in lines.reverse().enumerate() {
                     let line2 = line.characters
-                    var numberColumn = 0
                     for (column,letter) in line2.enumerate() {
-                        print(++numberColumn)
                         let xPosition = CGFloat(column) * wallSize.width + wallSize.width/2
                         let yPosition = CGFloat(row) * wallSize.height + wallSize.height/2
                         let position = CGPoint(x: xPosition ,y: yPosition)
