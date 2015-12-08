@@ -41,6 +41,9 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         return CGSize(width: width, height: height)
     }
     
+    var startingPosition: CGPoint?
+    
+    
     // MARK:
     override func didMoveToView(view: SKView) {
         /* Setup scene here */
@@ -96,22 +99,13 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    func onUpdateTimer() -> Void
-    {
+    func onUpdateTimer() {
         if(seconds >= 0)
         {
             seconds++;
-            
             updateTimeLabel();
         }
-        /*else if(seconds == 0)
-        {
-            if(timer != nil)
-            {
-                timer!.invalidate();
-                timer = nil;  
-            }   
-        }  */
+        
     }
     //end timer code
     
@@ -126,7 +120,11 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         
         hero.physicsBody?.linearDamping = 0.5
         
-        hero.position = CGPoint(x: 64, y: 640)
+        if let position = startingPosition {
+            hero.position = position
+        }
+        
+        //hero.position = CGPoint(x: 64, y: 640)
         
         addChild(hero)
         
@@ -178,7 +176,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                             
                             addChild(node)
                             
-                        } else if letter == "s"{
+                        } else if letter == "s" {
                             //load star point token
                             let node = SKSpriteNode(imageNamed: "star")
                             node.name = "star"
@@ -191,12 +189,13 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                             
                             node.position = position
                             addChild(node)
-                        }//end of if letter s
-                        else if letter == "f"{
+                        } else if letter == "f" {
                             //load finish point
                             
-                        }//end of if letter f
-                    }//end of letter load
+                        } else if letter == "t" {
+                            startingPosition = position
+                        }
+                    }
                 }
             }
         }
