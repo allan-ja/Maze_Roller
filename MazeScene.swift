@@ -17,77 +17,45 @@ enum CollisionTypes: UInt32 {
     case Token = 4
     case Finish = 8
     case Start = 16
-    //add vortex token enum
+    
 }
 
 class MazeScene: SKScene, SKPhysicsContactDelegate {
-    var hero = SKSpriteNode!()
-    var spriteView = SKView!()
-
+    // MARK: - Variables
     
-    //score
+    var hero: SKSpriteNode!
+    var motionManager: CMMotionManager!
     var gameOver = false
     
     var scoreLabel: SKLabelNode!
     
-    var score: Int = 0 {
-
-        didSet {
-            scoreLabel.text = "Score \(score)"
-        }
-    }
+    var score: Int = 0
     
-    var timer:NSTimer?;
-    var seconds:Int = 0;
+    var timer: NSTimer?
+    var seconds: Int = 0
     var timeLabel: SKLabelNode!
-    var time: Int = 0 {
-        
-        didSet {
-            timeLabel.text = "Time \(time)"
-        }
-    }
-
     
     var wallSize: CGSize {
         let width = CGRectGetWidth(self.frame) / 32
         let height = CGRectGetHeight(self.frame) / 24
-        
-        /* Use for debugging
-        let widthSP = spriteView.bounds.width // 32
-        let heightSP = spriteView.bounds.height // 24
-        print("Frame size", width, height)
-        print("SP size", widthSP, heightSP)*/
         return CGSize(width: width, height: height)
     }
     
+    // MARK:
     override func didMoveToView(view: SKView) {
-        /* Setup your scene here */
+        /* Setup scene here */
         
-        spriteView = view
-        constructScene()
+        createScene()
+        createScoreLabel()
+        createTimerLabel()
         createPlayer()
         
-        scoreLabel = SKLabelNode (fontNamed: "Arial")
-        scoreLabel.text = "Score: 0"
-        scoreLabel.horizontalAlignmentMode = .Left
-        scoreLabel.position = CGPoint(x: 10,y: 8)
-        scoreLabel.fontColor = UIColor.redColor()
-        
-        
-        addChild(scoreLabel)
-        
-        //timer code
-        timeLabel = SKLabelNode (fontNamed: "Arial")
-        timeLabel.text = "Score: 0"
-        timeLabel.horizontalAlignmentMode = .Left
-        timeLabel.position = CGPoint(x: 200,y: 8)
-        timeLabel.fontColor = UIColor.redColor()
-        
-        addChild(timeLabel)
-
-        
-        physicsWorld.gravity = CGVector(dx: 0, dy: 0)
+        //physicsWorld.gravity = CGVector(dx: 0, dy: 0)
         physicsWorld.contactDelegate = self
+        
+        motionManager = CMMotionManager()
+        motionManager.startDeviceMotionUpdates()
+        //motionManager.startAccelerometerUpdates()
         
     }
     
@@ -99,12 +67,21 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
             {
                 timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target:self, selector:Selector("onUpdateTimer"), userInfo:nil, repeats:true);
             }
-            
         }
+
+        // deviceMotion or simple accelerometerData available
+        if let motionData = motionManager.deviceMotion {
+            physicsWorld.gravity = CGVector(dx: motionData.gravity.y * -25, dy: motionData.gravity.x * 25)
+        }
+        
+        /*if let motionData = motionManager.accelerometerData {
+            physicsWorld.gravity = CGVector(dx: motionData.acceleration.y * -50, dy: motionData.acceleration.x * 50)
+        }*/
+        
     }
     
     
-    //timer function
+    // MARK: - Timer Functions
     func updateTimeLabel()
     {
         if(timeLabel != nil)
@@ -138,6 +115,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     }
     //end timer code
     
+    // MARK: - Create Functions
     func createPlayer() {
         hero = SKSpriteNode(imageNamed: "ball")
         hero.physicsBody = SKPhysicsBody(circleOfRadius: hero.size.width / 2)
@@ -146,13 +124,35 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         hero.physicsBody?.contactTestBitMask = CollisionTypes.Token.rawValue | CollisionTypes.Finish.rawValue
         
         
+        hero.physicsBody?.linearDamping = 0.5
+        
         hero.position = CGPoint(x: 64, y: 640)
         
         addChild(hero)
         
     }
     
-    func constructScene() {
+    func createScoreLabel() {
+        scoreLabel = SKLabelNode (fontNamed: "Arial")
+        scoreLabel.text = "Score: 0"
+        scoreLabel.horizontalAlignmentMode = .Left
+        scoreLabel.position = CGPoint(x: 10,y: 8)
+        scoreLabel.fontColor = UIColor.redColor()
+        
+        addChild(scoreLabel)
+        
+    }
+    
+    func createTimerLabel() {
+        timeLabel = SKLabelNode (fontNamed: "Arial")
+        timeLabel.horizontalAlignmentMode = .Left
+        timeLabel.position = CGPoint(x: 200,y: 8)
+        timeLabel.fontColor = UIColor.redColor()
+        
+        addChild(timeLabel)
+    }
+    
+    func createScene() {
         self.backgroundColor = UIColor.whiteColor()
         
         if let scenePath = NSBundle.mainBundle().pathForResource("level2", ofType: "txt"){
@@ -199,8 +199,10 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                     }//end of letter load
                 }
             }
-        }//end of if scenePath
+        }
     }
+    
+    //MARK: - Interaction Management Functions
     
     func didBeginTouch(contact: SKPhysicsContact){
         if contact.bodyA.node == hero {
