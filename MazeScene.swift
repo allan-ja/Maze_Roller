@@ -29,7 +29,11 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     
     var scoreLabel: SKLabelNode!
     
-    var score: Int = 0
+    var score: Int = 0 {
+        didSet {
+            scoreLabel.text = "Score \(score)"
+        }
+    }
     
     var timer: NSTimer?
     var seconds: Int = 0
@@ -188,9 +192,26 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                             node.physicsBody?.contactTestBitMask = CollisionTypes.Hero.rawValue
                             
                             node.position = position
+                            
                             addChild(node)
                         } else if letter == "f" {
-                            //load finish point
+                            let node = SKShapeNode(circleOfRadius: wallSize.width/1.5)
+                            node.name = "finish"
+                            node.fillColor = SKColor.blueColor()
+                            
+                            let fading = SKAction.fadeAlphaTo(0.1, duration: 1.0)
+                            let appearing = SKAction.fadeAlphaTo(1, duration: 1.0)
+                            node.runAction(SKAction.repeatActionForever(SKAction.sequence([fading, appearing])))
+                            
+                            node.physicsBody = SKPhysicsBody(circleOfRadius: 1)
+                            node.physicsBody?.dynamic = false
+                            node.physicsBody?.categoryBitMask = CollisionTypes.Finish.rawValue
+                            node.physicsBody?.collisionBitMask = 0
+                            node.physicsBody?.contactTestBitMask = CollisionTypes.Hero.rawValue
+                            
+                            node.position = CGPoint(x: position.x + wallSize.width/2, y: position.y - wallSize.height/2)
+                            
+                            addChild(node)
                             
                         } else if letter == "t" {
                             startingPosition = position
@@ -203,7 +224,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     
     //MARK: - Interaction Management Functions
     
-    func didBeginTouch(contact: SKPhysicsContact){
+    func didBeginContact(contact: SKPhysicsContact){
         if contact.bodyA.node == hero {
             heroTouchToNode(contact.bodyB.node!)
         }else if contact.bodyB.node == hero {
@@ -232,7 +253,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
             node.removeFromParent()
             ++score
         }else if node.name == "finish" {
-            //game finished
+            print("game over")
         }
     }
    

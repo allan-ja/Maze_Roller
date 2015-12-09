@@ -3,7 +3,7 @@ x       x             x        x
 x       x      s      x        x
 x  xxx  x  xxxxxxxxx  x  xxxxxxx
 x  x    x      s   x  x  x     x
-x  x t  x          x     x     x
+x  x    x          x     x     x
 x  xxxxxxxxxxx     x     x  x  x
 x  x  x      x     x     x  x  x
 x  x  x      x     x  x     x  x
@@ -17,7 +17,7 @@ x        x      x     x        x
 x   xxxxxx      x     x        x
 x               x     x   xxxxxx
 x            x  xxxxxxx        x
-x            x     x  x        x
+x            x     xf x   t    x
 xxxxxxxxx    x     x  xxxxx    x
 x            x     x           x
 x            x     x           x
