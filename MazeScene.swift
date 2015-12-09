@@ -15,6 +15,7 @@ enum CollisionTypes: UInt32 {
     case Hero = 1
     case Wall = 2
     case Token = 4
+    case Vortex = 32
     case Finish = 8
     case Start = 16
     
@@ -157,7 +158,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     func createScene() {
         self.backgroundColor = UIColor.whiteColor()
         
-        if let scenePath = NSBundle.mainBundle().pathForResource("level2", ofType: "txt"){
+        if let scenePath = NSBundle.mainBundle().pathForResource("level3", ofType: "txt"){
             if let levelString = try? NSString(contentsOfFile: scenePath, encoding: NSUTF8StringEncoding){
                 let lines = levelString.componentsSeparatedByString("\n") as [String]
                 
@@ -194,7 +195,21 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                             node.position = position
                             
                             addChild(node)
-                        } else if letter == "f" {
+                        }else if letter == "v" {
+                            //load star point token
+                            let node = SKSpriteNode(imageNamed: "vortex")
+                            node.name = "vortex"
+                            node.physicsBody = SKPhysicsBody(circleOfRadius: node.size.width / 2)
+                            node.physicsBody?.dynamic = false
+                            
+                            node.physicsBody?.categoryBitMask = CollisionTypes.Token.rawValue
+                            node.physicsBody?.collisionBitMask = 0
+                            node.physicsBody?.contactTestBitMask = CollisionTypes.Vortex.rawValue
+                            
+                            node.position = position
+                            
+                            addChild(node)
+                        }else if letter == "f" {
                             let node = SKShapeNode(circleOfRadius: wallSize.width/1.5)
                             node.name = "finish"
                             node.fillColor = SKColor.blueColor()
