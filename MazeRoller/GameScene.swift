@@ -14,12 +14,13 @@ class GameScene: SKScene {
  
     
     let playbutton = SKSpriteNode(imageNamed: "playbutton")
+    var nameLabel: SKLabelNode!
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         self.playbutton.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
         self.addChild(playbutton)
-        
+        createTitleLabel()
         self.backgroundColor = UIColor(red: 0.502, green: 0.851, blue: 1, alpha: 1.0)
     }
     
@@ -52,6 +53,18 @@ class GameScene: SKScene {
     
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+    }
+
+  //add game title function
+    func createTitleLabel() {
+        nameLabel = SKLabelNode (fontNamed: "Arial")
+        nameLabel.text = "MazeRoller"
+        nameLabel.horizontalAlignmentMode = .Left
+        nameLabel.position = CGPointMake(CGRectGetMidX(self.frame) * 0.85,CGRectGetMaxY(self.frame) * 0.80)
+        nameLabel.fontColor = UIColor.purpleColor()
+        
+        addChild(nameLabel)
+        
     }
 
 }
