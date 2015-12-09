@@ -127,10 +127,12 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func onUpdateTimer() {
-        if(seconds >= 0)
-        {
-            seconds++;
-            updateTimeLabel();
+        if(!gamePaused){
+            if(seconds >= 0)
+            {
+                seconds++;
+                updateTimeLabel();
+            }
         }
         
     }
