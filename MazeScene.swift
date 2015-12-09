@@ -17,77 +17,52 @@ enum CollisionTypes: UInt32 {
     case Token = 4
     case Finish = 8
     case Start = 16
-    //add vortex token enum
+    
 }
 
 class MazeScene: SKScene, SKPhysicsContactDelegate {
-    var hero = SKSpriteNode!()
-    var spriteView = SKView!()
-
+    // MARK: - Variables
     
-    //score
+    var hero: SKSpriteNode!
+    var motionManager: CMMotionManager!
     var gameOver = false
     
     var scoreLabel: SKLabelNode!
     
     var score: Int = 0 {
-
         didSet {
             scoreLabel.text = "Score \(score)"
         }
     }
     
-    var timer:NSTimer?;
-    var seconds:Int = 0;
+    var timer: NSTimer?
+    var seconds: Int = 0
     var timeLabel: SKLabelNode!
-    var time: Int = 0 {
-        
-        didSet {
-            timeLabel.text = "Time \(time)"
-        }
-    }
-
     
     var wallSize: CGSize {
         let width = CGRectGetWidth(self.frame) / 32
         let height = CGRectGetHeight(self.frame) / 24
-        
-        /* Use for debugging
-        let widthSP = spriteView.bounds.width // 32
-        let heightSP = spriteView.bounds.height // 24
-        print("Frame size", width, height)
-        print("SP size", widthSP, heightSP)*/
         return CGSize(width: width, height: height)
     }
     
+    var startingPosition: CGPoint?
+    
+    
+    // MARK:
     override func didMoveToView(view: SKView) {
-        /* Setup your scene here */
+        /* Setup scene here */
         
-        spriteView = view
-        constructScene()
+        createScene()
+        createScoreLabel()
+        createTimerLabel()
         createPlayer()
         
-        scoreLabel = SKLabelNode (fontNamed: "Arial")
-        scoreLabel.text = "Score: 0"
-        scoreLabel.horizontalAlignmentMode = .Left
-        scoreLabel.position = CGPoint(x: 10,y: 8)
-        scoreLabel.fontColor = UIColor.redColor()
-        
-        
-        addChild(scoreLabel)
-        
-        //timer code
-        timeLabel = SKLabelNode (fontNamed: "Arial")
-        timeLabel.text = "Score: 0"
-        timeLabel.horizontalAlignmentMode = .Left
-        timeLabel.position = CGPoint(x: 200,y: 8)
-        timeLabel.fontColor = UIColor.redColor()
-        
-        addChild(timeLabel)
-
-        
-        physicsWorld.gravity = CGVector(dx: 0, dy: 0)
+        //physicsWorld.gravity = CGVector(dx: 0, dy: 0)
         physicsWorld.contactDelegate = self
+        
+        motionManager = CMMotionManager()
+        motionManager.startDeviceMotionUpdates()
+        //motionManager.startAccelerometerUpdates()
         
     }
     
@@ -99,12 +74,21 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
             {
                 timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target:self, selector:Selector("onUpdateTimer"), userInfo:nil, repeats:true);
             }
-            
         }
+
+        // deviceMotion or simple accelerometerData available
+        if let motionData = motionManager.deviceMotion {
+            physicsWorld.gravity = CGVector(dx: motionData.gravity.y * -25, dy: motionData.gravity.x * 25)
+        }
+        
+        /*if let motionData = motionManager.accelerometerData {
+            physicsWorld.gravity = CGVector(dx: motionData.acceleration.y * -50, dy: motionData.acceleration.x * 50)
+        }*/
+        
     }
     
     
-    //timer function
+    // MARK: - Timer Functions
     func updateTimeLabel()
     {
         if(timeLabel != nil)
@@ -119,25 +103,17 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    func onUpdateTimer() -> Void
-    {
+    func onUpdateTimer() {
         if(seconds >= 0)
         {
             seconds++;
-            
             updateTimeLabel();
         }
-        /*else if(seconds == 0)
-        {
-            if(timer != nil)
-            {
-                timer!.invalidate();
-                timer = nil;  
-            }   
-        }  */
+        
     }
     //end timer code
     
+    // MARK: - Create Functions
     func createPlayer() {
         hero = SKSpriteNode(imageNamed: "ball")
         hero.physicsBody = SKPhysicsBody(circleOfRadius: hero.size.width / 2)
@@ -146,13 +122,39 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         hero.physicsBody?.contactTestBitMask = CollisionTypes.Token.rawValue | CollisionTypes.Finish.rawValue
         
         
-        hero.position = CGPoint(x: 64, y: 640)
+        hero.physicsBody?.linearDamping = 0.5
+        
+        if let position = startingPosition {
+            hero.position = position
+        }
+        
+        //hero.position = CGPoint(x: 64, y: 640)
         
         addChild(hero)
         
     }
     
-    func constructScene() {
+    func createScoreLabel() {
+        scoreLabel = SKLabelNode (fontNamed: "Arial")
+        scoreLabel.text = "Score: 0"
+        scoreLabel.horizontalAlignmentMode = .Left
+        scoreLabel.position = CGPoint(x: 10,y: 8)
+        scoreLabel.fontColor = UIColor.redColor()
+        
+        addChild(scoreLabel)
+        
+    }
+    
+    func createTimerLabel() {
+        timeLabel = SKLabelNode (fontNamed: "Arial")
+        timeLabel.horizontalAlignmentMode = .Left
+        timeLabel.position = CGPoint(x: 200,y: 8)
+        timeLabel.fontColor = UIColor.redColor()
+        
+        addChild(timeLabel)
+    }
+    
+    func createScene() {
         self.backgroundColor = UIColor.whiteColor()
         
         if let scenePath = NSBundle.mainBundle().pathForResource("level2", ofType: "txt"){
@@ -178,7 +180,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                             
                             addChild(node)
                             
-                        } else if letter == "s"{
+                        } else if letter == "s" {
                             //load star point token
                             let node = SKSpriteNode(imageNamed: "star")
                             node.name = "star"
@@ -190,19 +192,39 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                             node.physicsBody?.contactTestBitMask = CollisionTypes.Hero.rawValue
                             
                             node.position = position
-                            addChild(node)
-                        }//end of if letter s
-                        else if letter == "f"{
-                            //load finish point
                             
-                        }//end of if letter f
-                    }//end of letter load
+                            addChild(node)
+                        } else if letter == "f" {
+                            let node = SKShapeNode(circleOfRadius: wallSize.width/1.5)
+                            node.name = "finish"
+                            node.fillColor = SKColor.blueColor()
+                            
+                            let fading = SKAction.fadeAlphaTo(0.1, duration: 1.0)
+                            let appearing = SKAction.fadeAlphaTo(1, duration: 1.0)
+                            node.runAction(SKAction.repeatActionForever(SKAction.sequence([fading, appearing])))
+                            
+                            node.physicsBody = SKPhysicsBody(circleOfRadius: 1)
+                            node.physicsBody?.dynamic = false
+                            node.physicsBody?.categoryBitMask = CollisionTypes.Finish.rawValue
+                            node.physicsBody?.collisionBitMask = 0
+                            node.physicsBody?.contactTestBitMask = CollisionTypes.Hero.rawValue
+                            
+                            node.position = CGPoint(x: position.x + wallSize.width/2, y: position.y - wallSize.height/2)
+                            
+                            addChild(node)
+                            
+                        } else if letter == "t" {
+                            startingPosition = position
+                        }
+                    }
                 }
             }
-        }//end of if scenePath
+        }
     }
     
-    func didBeginTouch(contact: SKPhysicsContact){
+    //MARK: - Interaction Management Functions
+    
+    func didBeginContact(contact: SKPhysicsContact){
         if contact.bodyA.node == hero {
             heroTouchToNode(contact.bodyB.node!)
         }else if contact.bodyB.node == hero {
@@ -231,7 +253,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
             node.removeFromParent()
             ++score
         }else if node.name == "finish" {
-            //game finished
+            print("game over")
         }
     }
    
