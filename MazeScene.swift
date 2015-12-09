@@ -62,6 +62,8 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     }
     
     var startingPosition: CGPoint?
+    var notificationCenter: NSNotificationCenter!
+    
     
     
     // MARK: - SKScene Functions
@@ -77,7 +79,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         createTimerLabel()
         createPlayer()
         
-        
+        registerAppTransitionObservers()
         
         physicsWorld.contactDelegate = self
         
@@ -154,7 +156,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.speed = 1
     }
     
-    // MARK: - Create Functions
+    // MARK: - Init Functions
     func createPlayer() {
         hero = SKSpriteNode(imageNamed: "ball")
         hero.physicsBody = SKPhysicsBody(circleOfRadius: hero.size.width / 2)
@@ -276,6 +278,39 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    func registerAppTransitionObservers() {
+        notificationCenter = NSNotificationCenter.defaultCenter()
+        
+        notificationCenter.addObserver(
+            self,
+            selector: "applicationWillResignActive:",
+            name:UIApplicationWillResignActiveNotification,
+            object: nil
+        )
+        
+        notificationCenter.addObserver(self, selector: "applicationWillEnterForeground:", name: UIApplicationWillEnterForegroundNotification, object: nil)
+        
+        notificationCenter.addObserver(self, selector: "applicationDidEnterBackground:", name: UIApplicationDidEnterBackgroundNotification, object: nil)
+        
+        
+    }
+    
+    //MARK: - Application Transistion Functions
+    func applicationWillResignActive(sender : AnyObject) {
+        print("SKScene: willResignAcitve")
+        if (!gamePaused) {
+            gamePaused = true
+        }
+    }
+    
+    func applicationWillEnterForeground(sender : AnyObject) {
+        print("SKScene: willEnterForeground")
+    }
+    
+    func applicationDidEnterBackground(sender : AnyObject){
+         print("SKScene: didEnterBackground")
+    }
+    
     //MARK: - Interaction Management Functions
     
     func didBeginContact(contact: SKPhysicsContact){
@@ -315,7 +350,6 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        print("touchEnded")
         gamePaused = !gamePaused
         
     }
