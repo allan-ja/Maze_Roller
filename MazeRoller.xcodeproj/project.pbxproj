@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		12817AE81C18520A009FBE5A /* level3.txt in Resources */ = {isa = PBXBuildFile; fileRef = 12817AE71C18520A009FBE5A /* level3.txt */; };
 		12CC8A701C13216D001C25AF /* MazeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12CC8A6F1C13216D001C25AF /* MazeScene.swift */; };
 		12E20A451C0F4E88006ED093 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E20A441C0F4E88006ED093 /* AppDelegate.swift */; };
 		12E20A471C0F4E88006ED093 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 12E20A461C0F4E88006ED093 /* GameScene.sks */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		12817AE71C18520A009FBE5A /* level3.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = level3.txt; sourceTree = "<group>"; };
 		12CC8A6F1C13216D001C25AF /* MazeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MazeScene.swift; path = ../MazeScene.swift; sourceTree = "<group>"; };
 		12E20A411C0F4E88006ED093 /* MazeRoller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MazeRoller.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12E20A441C0F4E88006ED093 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 			children = (
 				12E20A761C0F4EF8006ED093 /* level1.txt */,
 				8F8B346B1C122297007F4CD3 /* level2.txt */,
+				12817AE71C18520A009FBE5A /* level3.txt */,
 				12E20A441C0F4E88006ED093 /* AppDelegate.swift */,
 				12E20A461C0F4E88006ED093 /* GameScene.sks */,
 				12E20A481C0F4E88006ED093 /* GameScene.swift */,
@@ -253,6 +256,7 @@
 				12E20A791C0F5048006ED093 /* Supporting Files in Resources */,
 				8F8B346C1C122297007F4CD3 /* level2.txt in Resources */,
 				12E20A771C0F4EF8006ED093 /* level1.txt in Resources */,
+				12817AE81C18520A009FBE5A /* level3.txt in Resources */,
 				12E20A471C0F4E88006ED093 /* GameScene.sks in Resources */,
 				12E20A531C0F4E88006ED093 /* LaunchScreen.storyboard in Resources */,
 				12E20A501C0F4E88006ED093 /* Assets.xcassets in Resources */,

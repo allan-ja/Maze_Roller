@@ -15,6 +15,7 @@ enum CollisionTypes: UInt32 {
     case Hero = 1
     case Wall = 2
     case Token = 4
+    case Vortex = 32
     case Finish = 8
     case Start = 16
     
