@@ -46,8 +46,8 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         let height = CGRectGetHeight(self.frame) / 24
         //let viewWidth = spriteView.frame.width / 32
         //let viewHeight = (self.view?.frame.height)! / 24
-        //print("Wall Size ",viewWidth, viewHeight)
-        return CGSize(width: width, height:height)
+        print("Maze Frame ", width * 32, height*24)
+        return CGSize(width: 32, height: 32)
     }
     
     var startingPosition: CGPoint?
@@ -160,8 +160,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func createScene() {
-        self.backgroundColor = UIColor.whiteColor()
-        
+        self.backgroundColor = UIColor(red: 0.502, green: 0.851, blue: 1, alpha: 1.0)
         if let scenePath = NSBundle.mainBundle().pathForResource("level2", ofType: "txt"){
             if let levelString = try? NSString(contentsOfFile: scenePath, encoding: NSUTF8StringEncoding){
                 let lines = levelString.componentsSeparatedByString("\n") as [String]
@@ -169,15 +168,15 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                 for (row,line) in lines.reverse().enumerate() {
                     let line2 = line.characters
                     for (column,letter) in line2.enumerate() {
-                        let xPosition = CGFloat(column) * wallSize.width + wallSize.width/2
-                        let yPosition = CGFloat(row) * wallSize.height + wallSize.height/2
-                        let position = CGPoint(x: xPosition ,y: yPosition)
+                        //let xPosition = CGFloat(column) * wallSize.width + wallSize.width/2
+                        //let yPosition = CGFloat(row) * wallSize.height + wallSize.height/2
+                        //let position = CGPoint(x: xPosition ,y: yPosition)
                         
-                        
+                        let position = CGPoint(x: (32 * column) + 16, y: (32 * row) + 16)
                         if letter == "x" {
                             //load wall
-                            //let node = SKSpriteNode(imageNamed: "wall")
-                            let node = SKSpriteNode(color: UIColor.grayColor(), size: wallSize)
+                            let node = SKSpriteNode(imageNamed: "wallBrick")
+                            //let node = SKSpriteNode(color: UIColor.grayColor(), size: wallSize)
                             node.position = position
                             //print("Node Size ", node.size)
                             node.physicsBody = SKPhysicsBody(rectangleOfSize: node.size)
@@ -204,7 +203,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                         } else if letter == "f" {
                             let node = SKShapeNode(circleOfRadius: wallSize.width/1.5)
                             node.name = "finish"
-                            node.fillColor = SKColor.blueColor()
+                            node.fillColor = SKColor.redColor()
                             
                             //let fading = SKAction.fadeAlphaTo(0.1, duration: 1.0)
                             //let appearing = SKAction.fadeAlphaTo(1, duration: 1.0)
@@ -212,7 +211,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                             let appearing = SKAction.fadeOutWithDuration(1.0)
                             node.runAction(SKAction.repeatActionForever(SKAction.sequence([fading, appearing])))
                             
-                            node.physicsBody = SKPhysicsBody(circleOfRadius: 1)
+                            node.physicsBody = SKPhysicsBody(circleOfRadius: wallSize.width/10)
                             node.physicsBody?.dynamic = false
                             node.physicsBody?.categoryBitMask = CollisionTypes.Finish.rawValue
                             node.physicsBody?.collisionBitMask = 0
@@ -263,6 +262,9 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
             ++score
         }else if node.name == "finish" {
             print("game over")
+            if let pause = self.view?.paused {
+                self.view?.paused = !pause
+            }
         }
     }
     

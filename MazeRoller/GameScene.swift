@@ -32,7 +32,7 @@ class GameScene: SKScene {
                 let scene = MazeScene(size = self.size)
                 let skView = self.view! as SKView
                 skView.ignoresSiblingOrder = true
-                scene.size = skView.bounds.size
+                scene.size = frame.size
                 scene.scaleMode = .AspectFit
                 skView.presentScene(scene)
                 

@@ -2,8 +2,8 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 x       x       s     x        x
 x       x             x        x
 x  xxx  x  xxxxxxxxx  x  xxxxxxx
-x  xt   x      s   x  x  x     x
-x  x    x          x     x     x
+x  x    x      s   x  x  x     x
+x tx    x          x     x     x
 x  xxxxxxxxxxx     x  x  x  x  x
 x  x  x      x     x     x  x  x
 x  x  x      x     x  x     x  x
