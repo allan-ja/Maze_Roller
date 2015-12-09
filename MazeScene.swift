@@ -157,7 +157,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     func createScene() {
         self.backgroundColor = UIColor.whiteColor()
         
-        if let scenePath = NSBundle.mainBundle().pathForResource("level2", ofType: "txt"){
+        if let scenePath = NSBundle.mainBundle().pathForResource("level1", ofType: "txt"){
             if let levelString = try? NSString(contentsOfFile: scenePath, encoding: NSUTF8StringEncoding){
                 let lines = levelString.componentsSeparatedByString("\n") as [String]
                 
