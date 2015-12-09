@@ -49,7 +49,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     var timer: NSTimer?
     var seconds: Int = 0
     var timeLabel: SKLabelNode!
-    var gameLayer: SKNode!
+    var gameLayer: SKEffectNode!
     var menuLayer: SKNode!
     
     var wallSize: CGSize {
@@ -70,10 +70,8 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     override func didMoveToView(view: SKView) {
         /* Setup scene here */
         
-        gameLayer = SKNode()
-        gameLayer.zPosition = 0
-        menuLayer = SKNode()
-        menuLayer.zPosition = 50
+        
+        createNodeLayers()
         createScene()
         createScoreLabel()
         createTimerLabel()
@@ -143,14 +141,23 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.speed = 0
     
         gameLayer.paused = true
+        
         let pausebutton = SKSpriteNode(imageNamed: "pausebutton")
         pausebutton.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
         menuLayer.addChild(pausebutton)
         
+        // Active Blur Effect
+        gameLayer.shouldEnableEffects = true
+        gameLayer.shouldRasterize = true
+        
+        
     }
     
     func willResumeGame() {
+        // Disable Blur Effect
+        gameLayer.shouldEnableEffects = false
         menuLayer.removeAllChildren()
+        
         gameLayer.paused = false
         
         physicsWorld.speed = 1
@@ -195,6 +202,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     
     func createScene() {
         self.backgroundColor = UIColor(red: 0.502, green: 0.851, blue: 1, alpha: 1.0)
+        //self.backgroundColor = UIColor.whiteColor()
         if let scenePath = NSBundle.mainBundle().pathForResource("level3", ofType: "txt"){
             if let levelString = try? NSString(contentsOfFile: scenePath, encoding: NSUTF8StringEncoding){
                 let lines = levelString.componentsSeparatedByString("\n") as [String]
@@ -234,7 +242,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                             node.zPosition = 0
                             
                             gameLayer.addChild(node)
-                        }else if letter == "v" {
+                        } else if letter == "v" {
                             //load star point token
                             let node = SKSpriteNode(imageNamed: "vortex")
                             node.name = "vortex"
@@ -248,7 +256,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                             node.position = position
                             
                             gameLayer.addChild(node)
-                        }else if letter == "f" {
+                        } else if letter == "f" {
                             let node = SKShapeNode(circleOfRadius: wallSize.width/1.5)
                             node.name = "finish"
                             node.fillColor = SKColor.redColor()
@@ -276,6 +284,20 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                 }
             }
         }
+    }
+    
+    func createNodeLayers() {
+        gameLayer = SKEffectNode()
+        gameLayer.zPosition = 0
+        
+        let blur = CIFilter(name: "CIGaussianBlur", withInputParameters: ["inputRadius" : 10])
+        gameLayer.filter = blur
+        gameLayer.shouldRasterize = true
+        gameLayer.shouldEnableEffects = false
+        
+        menuLayer = SKNode()
+        menuLayer.zPosition = 50
+        
     }
     
     func registerAppTransitionObservers() {
