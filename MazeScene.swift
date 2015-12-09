@@ -187,7 +187,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.text = "Score: 0"
         scoreLabel.horizontalAlignmentMode = .Left
         scoreLabel.position = CGPoint(x: 10,y: 8)
-        scoreLabel.fontColor = UIColor.redColor()
+        scoreLabel.fontColor = UIColor.blackColor()
         
         addChild(scoreLabel)
         
@@ -197,7 +197,8 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         timeLabel = SKLabelNode (fontNamed: "Arial")
         timeLabel.horizontalAlignmentMode = .Left
         timeLabel.position = CGPoint(x: 200,y: 8)
-        timeLabel.fontColor = UIColor.redColor()
+        timeLabel.fontColor = UIColor.blackColor()
+        
         
         addChild(timeLabel)
     }
