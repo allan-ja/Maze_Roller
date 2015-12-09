@@ -33,6 +33,7 @@ class GameScene: SKScene {
                 let skView = self.view! as SKView
                 skView.ignoresSiblingOrder = true
                 scene.size = skView.bounds.size
+                scene.scaleMode = .AspectFit
                 skView.presentScene(scene)
                 
             }//playbutton tapped

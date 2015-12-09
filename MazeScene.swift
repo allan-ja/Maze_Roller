@@ -26,6 +26,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     var hero: SKSpriteNode!
     var motionManager: CMMotionManager!
     var gameOver = false
+    var gamePaused = false
     
     var scoreLabel: SKLabelNode!
     
@@ -35,6 +36,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    var spriteView: SKView!
     var timer: NSTimer?
     var seconds: Int = 0
     var timeLabel: SKLabelNode!
@@ -42,7 +44,10 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     var wallSize: CGSize {
         let width = CGRectGetWidth(self.frame) / 32
         let height = CGRectGetHeight(self.frame) / 24
-        return CGSize(width: width, height: height)
+        //let viewWidth = spriteView.frame.width / 32
+        //let viewHeight = (self.view?.frame.height)! / 24
+        //print("Wall Size ",viewWidth, viewHeight)
+        return CGSize(width: width, height:height)
     }
     
     var startingPosition: CGPoint?
@@ -168,12 +173,13 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                         let yPosition = CGFloat(row) * wallSize.height + wallSize.height/2
                         let position = CGPoint(x: xPosition ,y: yPosition)
                         
+                        
                         if letter == "x" {
                             //load wall
                             //let node = SKSpriteNode(imageNamed: "wall")
                             let node = SKSpriteNode(color: UIColor.grayColor(), size: wallSize)
                             node.position = position
-                            
+                            //print("Node Size ", node.size)
                             node.physicsBody = SKPhysicsBody(rectangleOfSize: node.size)
                             node.physicsBody?.categoryBitMask = CollisionTypes.Wall.rawValue
                             node.physicsBody?.dynamic = false
@@ -194,13 +200,16 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                             node.position = position
                             
                             addChild(node)
+                            
                         } else if letter == "f" {
                             let node = SKShapeNode(circleOfRadius: wallSize.width/1.5)
                             node.name = "finish"
                             node.fillColor = SKColor.blueColor()
                             
-                            let fading = SKAction.fadeAlphaTo(0.1, duration: 1.0)
-                            let appearing = SKAction.fadeAlphaTo(1, duration: 1.0)
+                            //let fading = SKAction.fadeAlphaTo(0.1, duration: 1.0)
+                            //let appearing = SKAction.fadeAlphaTo(1, duration: 1.0)
+                            let fading = SKAction.fadeInWithDuration(1.0)
+                            let appearing = SKAction.fadeOutWithDuration(1.0)
                             node.runAction(SKAction.repeatActionForever(SKAction.sequence([fading, appearing])))
                             
                             node.physicsBody = SKPhysicsBody(circleOfRadius: 1)
@@ -255,6 +264,14 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         }else if node.name == "finish" {
             print("game over")
         }
+    }
+    
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        print("touchEnded")
+        if let pause = self.view?.paused {
+            self.view?.paused = !pause
+        }
+        
     }
    
 }
