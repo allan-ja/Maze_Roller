@@ -38,14 +38,6 @@ class GameScene: SKScene {
                 scene.scaleMode = .AspectFit
                 skView.presentScene(scene)
                 
-            }//playbutton tapped
-            else if self.nodeAtPoint(location) == self.playbutton {
-                //settings menu touch
-               /* let scene = MazeScene(size = self.size)
-                let skView = self.view! as SKView
-                skView.ignoresSiblingOrder = true
-                scene.size = skView.bounds.size
-                skView.presentScene(scene)*/
             }
             
             

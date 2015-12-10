@@ -53,36 +53,31 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     var skView: SKView!
     var timer: NSTimer?
     var seconds: Int = 0
+    
     var timeLabel: SKLabelNode!
     var gameLayer: SKEffectNode!
     var menuLayer: SKNode!
+    let stopButton = SKSpriteNode(imageNamed: "stopbutton")
+    let pauseButton = SKSpriteNode(imageNamed: "pausebutton")
     
     var wallSize: CGSize {
-        let width = CGRectGetWidth(self.frame) / 32
-        let height = CGRectGetHeight(self.frame) / 24
-        //let viewWidth = spriteView.frame.width / 32
-        //let viewHeight = (self.view?.frame.height)! / 24
-        print("Maze Frame ", width * 32, height*24)
         return CGSize(width: 32, height: 32)
     }
     
     var startingPosition: CGPoint?
     var notificationCenter: NSNotificationCenter!
     
-    var currentLevel: String = "level3"
+    var currentLevel: String = "level1"
     
     // MARK: - SKScene Functions
     override func didMoveToView(view: SKView) {
         /* Setup scene here */
-        if self.userData?.objectForKey("level") != nil {
-            print("present")
-        }
         
         createNodeLayers()
         createScene()
         createScoreLabel()
         createTimerLabel()
-        createPlayer()
+        createHero()
         
         registerAppTransitionObservers()
         
@@ -90,8 +85,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.gravity = CGVector(dx: 0, dy:0)
         
         motionManager = CMMotionManager()
-        //motionManager.startDeviceMotionUpdates()
-        motionManager.startAccelerometerUpdates()
+        motionManager.startDeviceMotionUpdates()
         
     }
     
@@ -106,12 +100,8 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         }
 
         // deviceMotion or simple accelerometerData available
-        /*if let motionData = motionManager.deviceMotion {
-            physicsWorld.gravity = CGVector(dx: motionData.gravity.y * -35, dy: motionData.gravity.x * 35 )
-        }*/
-        
-        if let motionData = motionManager.accelerometerData {
-            physicsWorld.gravity = CGVector(dx: motionData.acceleration.y * -35, dy: motionData.acceleration.x * 35)
+        if let motionData = motionManager.deviceMotion {
+            physicsWorld.gravity = CGVector(dx: motionData.gravity.y * -25, dy: motionData.gravity.x * 25 )
         }
         
     }
@@ -163,7 +153,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         if score > NSUserDefaults.standardUserDefaults().integerForKey("Highscore") {
             NSUserDefaults.standardUserDefaults().setInteger(score, forKey: "Highscore")
             NSUserDefaults.standardUserDefaults().synchronize()
-            highScoreLabel.text = "Highscore: \(score)"
+            //highScoreLabel.text = "Highscore: \(score)"
     }
     
     NSUserDefaults.standardUserDefaults().integerForKey("Highscore")
@@ -172,15 +162,15 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     
     // MARK: - Game State Functions
     func didPauseGame() {
-        let pausebutton = SKSpriteNode(imageNamed: "pausebutton")
-        pausebutton.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
-        menuLayer.addChild(pausebutton)
+        
+        pauseButton.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+        menuLayer.addChild(pauseButton)
         
         // Active Blur Effect
-        gameLayer.shouldEnableEffects = true
-        gameLayer.shouldRasterize = true
+        //gameLayer.shouldEnableEffects = true
+        //gameLayer.shouldRasterize = true
         
-        print("pauseGame")
+       
         physicsWorld.speed = 0
     
         gameLayer.paused = true
@@ -189,7 +179,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     
     func willResumeGame() {
         // Disable Blur Effect
-        gameLayer.shouldEnableEffects = false
+        //gameLayer.shouldEnableEffects = false
         menuLayer.removeAllChildren()
         
         gameLayer.paused = false
@@ -198,7 +188,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     }
     
     // MARK: - Init Functions
-    func createPlayer() {
+    func createHero() {
         hero = SKSpriteNode(imageNamed: "ball")
         hero.physicsBody = SKPhysicsBody(circleOfRadius: hero.size.width / 2)
         hero.physicsBody?.categoryBitMask = CollisionTypes.Hero.rawValue
@@ -244,10 +234,10 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     
     func createScene() {
         self.backgroundColor = UIColor(red: 0.502, green: 0.851, blue: 1, alpha: 1.0)
-        //self.backgroundColor = UIColor.whiteColor()
+
         if let level = self.userData?.objectForKey("level"){
             currentLevel = level as! String
-            print("level OK")
+            
         }
         
         if let scenePath = NSBundle.mainBundle().pathForResource(currentLevel, ofType: "txt"){
@@ -257,9 +247,6 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                 for (row,line) in lines.reverse().enumerate() {
                     let line2 = line.characters
                     for (column,letter) in line2.enumerate() {
-                        //let xPosition = CGFloat(column) * wallSize.width + wallSize.width/2
-                        //let yPosition = CGFloat(row) * wallSize.height + wallSize.height/2
-                        //let position = CGPoint(x: xPosition ,y: yPosition)
                         
                         let position = CGPoint(x: (32 * column) + 16, y: (32 * row) + 16)
                         if letter == "x" {
@@ -308,14 +295,14 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                             let node = SKShapeNode(circleOfRadius: wallSize.width/1.5)
                             node.name = "finish"
                             node.fillColor = SKColor.redColor()
+                            node.strokeColor = SKColor.redColor()
                             
-                            //let fading = SKAction.fadeAlphaTo(0.1, duration: 1.0)
-                            //let appearing = SKAction.fadeAlphaTo(1, duration: 1.0)
+                            
                             let fading = SKAction.fadeInWithDuration(1.0)
                             let appearing = SKAction.fadeOutWithDuration(1.0)
                             node.runAction(SKAction.repeatActionForever(SKAction.sequence([fading, appearing])))
                             
-                            node.physicsBody = SKPhysicsBody(circleOfRadius: wallSize.width/10)
+                            node.physicsBody = SKPhysicsBody(circleOfRadius: 7)
                             node.physicsBody?.dynamic = false
                             node.physicsBody?.categoryBitMask = CollisionTypes.Finish.rawValue
                             node.physicsBody?.collisionBitMask = 0
@@ -337,6 +324,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     func createNodeLayers() {
         gameLayer = SKEffectNode()
         gameLayer.zPosition = 0
+        
         
         let blur = CIFilter(name: "CIGaussianBlur", withInputParameters: ["inputRadius" : 10])
         gameLayer.filter = blur
@@ -371,18 +359,18 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     
     //MARK: - Application Transistion Functions
     func applicationWillResignActive(sender : AnyObject) {
-        print("SKScene: willResignAcitve")
+       
         if (!gamePaused) {
             gamePaused = true
         }
     }
     
     func applicationWillEnterForeground(sender : AnyObject) {
-        print("SKScene: willEnterForeground")
+       
     }
     
     func applicationDidEnterBackground(sender : AnyObject){
-         print("SKScene: didEnterBackground")
+        
     }
     
     
@@ -411,7 +399,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
             let sequance = SKAction.sequence([move,scale,remove])
             
             hero.runAction(sequance) { [unowned self] in
-                self.createPlayer()
+                self.createHero()
                 self.gameOver = false
             }
         }else if node.name == "token" {
@@ -420,16 +408,52 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
             updateHighScore()
             tokenCounter -= 1
         }else if node.name == "finish" {
-            print("game over")
+            
             if let pause = self.view?.paused {
                 self.view?.paused = !pause
             }
+            
+            
+            stopButton.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) - stopButton.frame.height)
+            
+            menuLayer.addChild(stopButton)
+            
+            let finishLabel = SKLabelNode(fontNamed: "Chalkduster")
+            finishLabel.text = "CONGRATULATION"
+            
+            finishLabel.fontSize = 90
+            finishLabel.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMidY(self.frame) + (self.frame.height/4))
+            finishLabel.zPosition = 1000
+            menuLayer.addChild(finishLabel)
+            
+            // Active Blur Effect
+            gameLayer.shouldEnableEffects = true
+            gameLayer.shouldRasterize = true
+            
+            
+            physicsWorld.speed = 0
+            
         }
     }
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        gamePaused = !gamePaused
         
+        gamePaused = true
+        for touch: AnyObject in touches {
+            let location = touch.locationInNode(self)
+            if self.nodeAtPoint(location) == self.pauseButton {
+                gamePaused = false
+            
+            } else if self.nodeAtPoint(location) == self.stopButton {
+                let scene = GameScene(size = self.size)
+                let skView = self.view! as SKView
+                skView.ignoresSiblingOrder = true
+                scene.size = frame.size
+                scene.scaleMode = .AspectFit
+                skView.presentScene(scene)
+            }
+            
+        }
     }
    
 }
