@@ -80,10 +80,11 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         registerAppTransitionObservers()
         
         physicsWorld.contactDelegate = self
+        physicsWorld.gravity = CGVector(dx: 0, dy:0)
         
         motionManager = CMMotionManager()
-        motionManager.startDeviceMotionUpdates()
-        //motionManager.startAccelerometerUpdates()
+        //motionManager.startDeviceMotionUpdates()
+        motionManager.startAccelerometerUpdates()
         
         self.addChild(gameLayer)
         self.addChild(menuLayer)
@@ -100,13 +101,13 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         }
 
         // deviceMotion or simple accelerometerData available
-        if let motionData = motionManager.deviceMotion {
-            physicsWorld.gravity = CGVector(dx: motionData.gravity.y * -25, dy: motionData.gravity.x * 25)
-        }
-        
-        /*if let motionData = motionManager.accelerometerData {
-            physicsWorld.gravity = CGVector(dx: motionData.acceleration.y * -50, dy: motionData.acceleration.x * 50)
+        /*if let motionData = motionManager.deviceMotion {
+            physicsWorld.gravity = CGVector(dx: motionData.gravity.y * -35, dy: motionData.gravity.x * 35 )
         }*/
+        
+        if let motionData = motionManager.accelerometerData {
+            physicsWorld.gravity = CGVector(dx: motionData.acceleration.y * -50, dy: motionData.acceleration.x * 50)
+        }
         
     }
     
@@ -171,7 +172,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         hero.physicsBody?.categoryBitMask = CollisionTypes.Hero.rawValue
         hero.physicsBody?.collisionBitMask = CollisionTypes.Wall.rawValue
         hero.physicsBody?.contactTestBitMask = CollisionTypes.Token.rawValue | CollisionTypes.Finish.rawValue
-        hero.physicsBody?.linearDamping = 0.5
+        hero.physicsBody?.linearDamping = 0.4
         
         if let position = startingPosition {
             hero.position = position
