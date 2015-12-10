@@ -259,7 +259,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                             let node = SKSpriteNode(imageNamed: "vortex")
                             node.name = "vortex"
                             node.runAction(SKAction.repeatActionForever(SKAction.rotateByAngle(CGFloat(M_PI), duration: 1)))
-                            node.physicsBody = SKPhysicsBody(circleOfRadius: node.size.width / 2)
+                            node.physicsBody = SKPhysicsBody(circleOfRadius: node.size.width / 3)
                             node.physicsBody?.dynamic = false
                             
                             node.physicsBody?.categoryBitMask = CollisionTypes.Vortex.rawValue
