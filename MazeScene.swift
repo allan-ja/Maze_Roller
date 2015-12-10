@@ -69,7 +69,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     var startingPosition: CGPoint?
     var notificationCenter: NSNotificationCenter!
     
-    var currentLevel: String = "level3"
+    var currentLevel: String = "level1"
     
     // MARK: - SKScene Functions
     override func didMoveToView(view: SKView) {
