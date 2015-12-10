@@ -24,6 +24,8 @@ enum CollisionTypes: UInt32 {
 class MazeScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Variables
     
+    var tokenCounter:Int = 0
+    
     var hero: SKSpriteNode!
     var motionManager: CMMotionManager!
     var gameOver = false
@@ -247,7 +249,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                             node.physicsBody?.categoryBitMask = CollisionTypes.Token.rawValue
                             node.physicsBody?.collisionBitMask = 0
                             node.physicsBody?.contactTestBitMask = CollisionTypes.Hero.rawValue
-                            
+                            self.tokenCounter++
                             node.position = position
                             node.zPosition = 0
                             
@@ -376,6 +378,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         }else if node.name == "star" {
             node.removeFromParent()
             ++score
+            tokenCounter -= 1
         }else if node.name == "finish" {
             print("game over")
             if let pause = self.view?.paused {
