@@ -82,6 +82,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         createScene()
         createScoreLabel()
         createTimerLabel()
+        createHScoreLabel()
         createPlayer()
         
         registerAppTransitionObservers()
@@ -146,6 +147,10 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     //HighScore
     
     func createHScoreLabel() {
+        if NSUserDefaults.standardUserDefaults().valueForKey("Highscore") == nil{
+            NSUserDefaults.standardUserDefaults().setInteger(0, forKey: "Highscore")
+        }
+        
         highScoreLabel = SKLabelNode (fontNamed: "Arial")
         highScoreLabel.text = "Highscore: \(NSUserDefaults.standardUserDefaults().integerForKey("Highscore"))"
         highScoreLabel.horizontalAlignmentMode = .Left
