@@ -109,7 +109,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         }*/
         
         if let motionData = motionManager.accelerometerData {
-            physicsWorld.gravity = CGVector(dx: motionData.acceleration.y * -50, dy: motionData.acceleration.x * 50)
+            physicsWorld.gravity = CGVector(dx: motionData.acceleration.y * -35, dy: motionData.acceleration.x * 35)
         }
         
     }
