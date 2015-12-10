@@ -24,6 +24,9 @@ enum CollisionTypes: UInt32 {
 class MazeScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Variables
     
+    var highScoreLabel: SKLabelNode!
+    var highscore = 0
+    
     var tokenCounter:Int = 0
     
     var hero: SKSpriteNode!
@@ -138,6 +141,33 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    //HighScore
+    
+    func createHScoreLabel() {
+        highScoreLabel = SKLabelNode (fontNamed: "Arial")
+        highScoreLabel.text = "Highscore: \(NSUserDefaults.standardUserDefaults().integerForKey("Highscore"))"
+        highScoreLabel.horizontalAlignmentMode = .Left
+        highScoreLabel.position = CGPoint(x: 350,y: 8)
+        highScoreLabel.fontColor = UIColor.redColor()
+        highScoreLabel.zPosition = 10
+        
+        
+        gameLayer.addChild(highScoreLabel)
+        
+    }
+    
+    func updateHighScore(){
+        NSUserDefaults.standardUserDefaults().integerForKey("Highscore")
+        if score > NSUserDefaults.standardUserDefaults().integerForKey("Highscore") {
+            NSUserDefaults.standardUserDefaults().setInteger(score, forKey: "Highscore")
+            NSUserDefaults.standardUserDefaults().synchronize()
+            highScoreLabel.text = "Highscore: \(score)"
+    }
+    
+    NSUserDefaults.standardUserDefaults().integerForKey("Highscore")
+    }
+
+    
     // MARK: - Game State Functions
     func didPauseGame() {
         let pausebutton = SKSpriteNode(imageNamed: "pausebutton")
@@ -183,7 +213,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func createScoreLabel() {
-        var barra = SKSpriteNode(color: SKColor.blackColor(), size: CGSizeMake(300, 50))
+        let barra = SKSpriteNode(color: SKColor.blackColor(), size: CGSizeMake(800, 50))
         barra.position = CGPoint(x: CGRectGetMidX(self.frame) * 0.3, y: 8)
         // zPosition to change in which layer the barra appears.
         barra.zPosition = 9
@@ -257,7 +287,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                             let node = SKSpriteNode(imageNamed: "vortex")
                             node.name = "vortex"
                             node.runAction(SKAction.repeatActionForever(SKAction.rotateByAngle(CGFloat(M_PI), duration: 1)))
-                            node.physicsBody = SKPhysicsBody(circleOfRadius: node.size.width / 2)
+                            node.physicsBody = SKPhysicsBody(circleOfRadius: node.size.width / 3)
                             node.physicsBody?.dynamic = false
                             
                             node.physicsBody?.categoryBitMask = CollisionTypes.Vortex.rawValue
@@ -380,6 +410,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         }else if node.name == "token" {
             node.removeFromParent()
             ++score
+            updateHighScore()
             tokenCounter -= 1
         }else if node.name == "finish" {
             print("game over")
