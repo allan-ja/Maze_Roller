@@ -42,7 +42,9 @@ class GameScene: SKScene {
                 skView.ignoresSiblingOrder = true
                 scene.size = frame.size
                 scene.scaleMode = .AspectFit
-                skView.presentScene(scene)
+                //skView.presentScene(scene)
+                var transition = SKTransition.fadeWithDuration(5)
+                self.view?.presentScene(scene, transition: transition)
                 
             }//playbutton tapped
             else if self.nodeAtPoint(location) == self.playbutton {
