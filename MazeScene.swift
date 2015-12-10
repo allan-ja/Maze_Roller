@@ -71,6 +71,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     
     // MARK: - SKScene Functions
     override func didMoveToView(view: SKView) {
+        
         /* Setup scene here */
         
         createNodeLayers()
@@ -86,6 +87,9 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         
         motionManager = CMMotionManager()
         motionManager.startDeviceMotionUpdates()
+        
+        
+       // LoadingOverlay.shared.hideOverlayView()
         
     }
     
@@ -136,6 +140,10 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     //HighScore
     
     func createHScoreLabel() {
+        if NSUserDefaults.standardUserDefaults().valueForKey("Highscore") == nil{
+            NSUserDefaults.standardUserDefaults().setInteger(0, forKey: "Highscore")
+        }
+        
         highScoreLabel = SKLabelNode (fontNamed: "Arial")
         highScoreLabel.text = "Highscore: \(NSUserDefaults.standardUserDefaults().integerForKey("Highscore"))"
         highScoreLabel.horizontalAlignmentMode = .Left
@@ -145,7 +153,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         
         
         gameLayer.addChild(highScoreLabel)
-        
+
     }
     
     func updateHighScore(){
@@ -438,7 +446,10 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
-        gamePaused = true
+        if gamePaused == false {
+            gamePaused = true
+        }
+        
         for touch: AnyObject in touches {
             let location = touch.locationInNode(self)
             if self.nodeAtPoint(location) == self.pauseButton {
