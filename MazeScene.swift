@@ -85,8 +85,6 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         motionManager.startDeviceMotionUpdates()
         //motionManager.startAccelerometerUpdates()
         
-        self.addChild(gameLayer)
-        self.addChild(menuLayer)
     }
     
     override func update(currentTime: CFTimeInterval) {
@@ -301,6 +299,10 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         menuLayer = SKNode()
         menuLayer.zPosition = 50
         
+        self.addChild(gameLayer)
+        self.addChild(menuLayer)
+
+        
     }
     
     func registerAppTransitionObservers() {
@@ -336,8 +338,8 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
          print("SKScene: didEnterBackground")
     }
     
-    //MARK: - Interaction Management Functions
     
+    //MARK: - Interaction Management Functions
     func didBeginContact(contact: SKPhysicsContact){
         if contact.bodyA.node == hero {
             heroTouchToNode(contact.bodyB.node!)
