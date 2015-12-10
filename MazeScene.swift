@@ -139,11 +139,6 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     
     // MARK: - Game State Functions
     func didPauseGame() {
-        print("pauseGame")
-        physicsWorld.speed = 0
-    
-        gameLayer.paused = true
-        
         let pausebutton = SKSpriteNode(imageNamed: "pausebutton")
         pausebutton.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
         menuLayer.addChild(pausebutton)
@@ -152,7 +147,11 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         gameLayer.shouldEnableEffects = true
         gameLayer.shouldRasterize = true
         
-        
+        print("pauseGame")
+        physicsWorld.speed = 0
+    
+        gameLayer.paused = true
+
     }
     
     func willResumeGame() {
@@ -183,13 +182,21 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func createScoreLabel() {
+        var barra = SKSpriteNode(color: SKColor.blackColor(), size: CGSizeMake(300, 50))
+        barra.position = CGPoint(x: CGRectGetMidX(self.frame) * 0.3, y: 8)
+        // zPosition to change in which layer the barra appears.
+        barra.zPosition = 9
+        gameLayer.addChild(barra)
+        
+
+        
         scoreLabel = SKLabelNode (fontNamed: "Arial")
         scoreLabel.text = "Score: 0"
         scoreLabel.horizontalAlignmentMode = .Left
         scoreLabel.position = CGPoint(x: 10,y: 8)
-        scoreLabel.fontColor = UIColor.blackColor()
-        
-        addChild(scoreLabel)
+        scoreLabel.fontColor = UIColor.whiteColor()
+        scoreLabel.zPosition = 10
+        gameLayer.addChild(scoreLabel)
         
     }
     
@@ -197,10 +204,9 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         timeLabel = SKLabelNode (fontNamed: "Arial")
         timeLabel.horizontalAlignmentMode = .Left
         timeLabel.position = CGPoint(x: 200,y: 8)
-        timeLabel.fontColor = UIColor.blackColor()
-        
-        
-        addChild(timeLabel)
+        timeLabel.fontColor = UIColor.whiteColor()
+        timeLabel.zPosition = 10
+        gameLayer.addChild(timeLabel)
     }
     
     func createScene() {
@@ -249,13 +255,14 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                             //load star point token
                             let node = SKSpriteNode(imageNamed: "vortex")
                             node.name = "vortex"
+                            node.runAction(SKAction.repeatActionForever(SKAction.rotateByAngle(CGFloat(M_PI), duration: 1)))
                             node.physicsBody = SKPhysicsBody(circleOfRadius: node.size.width / 2)
                             node.physicsBody?.dynamic = false
                             
-                            node.physicsBody?.categoryBitMask = CollisionTypes.Token.rawValue
+                            node.physicsBody?.categoryBitMask = CollisionTypes.Vortex.rawValue
                             node.physicsBody?.collisionBitMask = 0
-                            node.physicsBody?.contactTestBitMask = CollisionTypes.Vortex.rawValue
-                            
+                            node.physicsBody?.contactTestBitMask = CollisionTypes.Hero.rawValue
+                            node.zPosition = 0
                             node.position = position
                             
                             gameLayer.addChild(node)
@@ -348,10 +355,12 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     
     
     func heroTouchToNode(node: SKNode) {
-        if node == "vortex" {
+        if node.name == "vortex" {
             hero.physicsBody?.dynamic = false
             gameOver = true
-            score -= 1
+            if(score > 0){
+                score -= 1
+            }
             
             let move =  SKAction.moveTo(node.position, duration: 0.25)
             let scale = SKAction.scaleTo(0.0001, duration: 0.25)
