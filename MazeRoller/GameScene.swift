@@ -15,6 +15,7 @@ class GameScene: SKScene {
     
     let playbutton = SKSpriteNode(imageNamed: "playbutton")
     var nameLabel: SKLabelNode!
+
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
@@ -66,5 +67,6 @@ class GameScene: SKScene {
         addChild(nameLabel)
         
     }
-
+    
+    
 }
