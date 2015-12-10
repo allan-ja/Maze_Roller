@@ -87,7 +87,7 @@ class LevelSelectionScene: SKScene {
                         scene.userData?.setObject(level as! String, forKey: "level")
                     }
                     
-                    var transition = SKTransition.fadeWithDuration(5)
+                    let transition = SKTransition.fadeWithDuration(7)
                     self.view?.presentScene(scene, transition: transition)
                     //skView.presentScene(scene)
                 }
