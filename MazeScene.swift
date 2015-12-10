@@ -242,7 +242,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                         } else if letter == "s" {
                             //load star point token
                             let node = SKSpriteNode(imageNamed: "star")
-                            node.name = "star"
+                            node.name = "token"
                             node.physicsBody = SKPhysicsBody(circleOfRadius: node.size.width / 2)
                             node.physicsBody?.dynamic = false
                             
@@ -375,7 +375,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
                 self.createPlayer()
                 self.gameOver = false
             }
-        }else if node.name == "star" {
+        }else if node.name == "token" {
             node.removeFromParent()
             ++score
             tokenCounter -= 1
