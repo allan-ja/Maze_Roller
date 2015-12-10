@@ -16,7 +16,7 @@ class LevelSelectionScene: SKScene {
     var numberMazesAvailable = Constants.defaultNumberMaze
     
     private struct Constants {
-        static let defaultNumberMaze = 2
+        static let defaultNumberMaze = 3
         static let firstCaseXPosition = CGFloat(166)
         static let spaceBetweenCases = CGFloat(230)
     }
