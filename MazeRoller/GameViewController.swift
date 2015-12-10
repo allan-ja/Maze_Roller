@@ -8,13 +8,16 @@
 
 import UIKit
 import SpriteKit
+import CoreData
 
 class GameViewController: UIViewController {
 
-
+   
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        //seedPerson()
+        //fetch()
         
         if let scene = GameScene(fileNamed:"GameScene") {
             // Configure the view.
@@ -32,8 +35,34 @@ class GameViewController: UIViewController {
             
             skView.presentScene(scene)
         }
+        
     }
     
+   /* func fetch() {
+        let personFetch = NSFetchRequest(entityName: "Person")
+        
+        do{
+            let fetchPerson = try moc.executeFetchRequest(personFetch) as! [Person]
+            print(fetchPerson.first!)
+        } catch {
+            fatalError("Bad things happened")
+            
+        }
+    }
+    
+    func seedPerson() {
+        
+        print("seedPerson")
+        let entity = NSEntityDescription.insertNewObjectForEntityForName("Person", inManagedObjectContext: moc) as! Person
+        
+        entity.setValue("Bob", forKey: "name")
+        
+        do {
+            try moc.save()
+        } catch {
+            fatalError("Failure to save context: \(error)")
+        }
+    }*/
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         

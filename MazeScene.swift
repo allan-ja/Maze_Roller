@@ -6,7 +6,7 @@
 //  Copyright © 2015 ErenBuyru. All rights reserved.
 //
 
-import Foundation
+
 import SpriteKit
 import CoreMotion
 
@@ -69,12 +69,14 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     var startingPosition: CGPoint?
     var notificationCenter: NSNotificationCenter!
     
-    
+    var currentLevel: String = "level3"
     
     // MARK: - SKScene Functions
     override func didMoveToView(view: SKView) {
         /* Setup scene here */
-        
+        if self.userData?.objectForKey("level") != nil {
+            print("present")
+        }
         
         createNodeLayers()
         createScene()
@@ -243,7 +245,12 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     func createScene() {
         self.backgroundColor = UIColor(red: 0.502, green: 0.851, blue: 1, alpha: 1.0)
         //self.backgroundColor = UIColor.whiteColor()
-        if let scenePath = NSBundle.mainBundle().pathForResource("level3", ofType: "txt"){
+        if let level = self.userData?.objectForKey("level"){
+            currentLevel = level as! String
+            print("level OK")
+        }
+        
+        if let scenePath = NSBundle.mainBundle().pathForResource(currentLevel, ofType: "txt"){
             if let levelString = try? NSString(contentsOfFile: scenePath, encoding: NSUTF8StringEncoding){
                 let lines = levelString.componentsSeparatedByString("\n") as [String]
                 

@@ -21,6 +21,7 @@
 		12E20A771C0F4EF8006ED093 /* level1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 12E20A761C0F4EF8006ED093 /* level1.txt */; };
 		12E20A791C0F5048006ED093 /* Supporting Files in Resources */ = {isa = PBXBuildFile; fileRef = 12E20A781C0F5048006ED093 /* Supporting Files */; };
 		8F8B346C1C122297007F4CD3 /* level2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 8F8B346B1C122297007F4CD3 /* level2.txt */; };
+		8FAD54E31C191304009AE5B1 /* LevelSelectionScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FAD54E21C191304009AE5B1 /* LevelSelectionScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,7 @@
 		12E20A761C0F4EF8006ED093 /* level1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = level1.txt; sourceTree = "<group>"; };
 		12E20A781C0F5048006ED093 /* Supporting Files */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Supporting Files"; sourceTree = "<group>"; };
 		8F8B346B1C122297007F4CD3 /* level2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = level2.txt; path = ../level2.txt; sourceTree = "<group>"; };
+		8FAD54E21C191304009AE5B1 /* LevelSelectionScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelSelectionScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 				12E20A461C0F4E88006ED093 /* GameScene.sks */,
 				12E20A481C0F4E88006ED093 /* GameScene.swift */,
 				12CC8A6F1C13216D001C25AF /* MazeScene.swift */,
+				8FAD54E21C191304009AE5B1 /* LevelSelectionScene.swift */,
 				12E20A4A1C0F4E88006ED093 /* GameViewController.swift */,
 				12E20A4C1C0F4E88006ED093 /* Main.storyboard */,
 				12E20A4F1C0F4E88006ED093 /* Assets.xcassets */,
@@ -287,6 +290,7 @@
 			files = (
 				12E20A491C0F4E88006ED093 /* GameScene.swift in Sources */,
 				12CC8A701C13216D001C25AF /* MazeScene.swift in Sources */,
+				8FAD54E31C191304009AE5B1 /* LevelSelectionScene.swift in Sources */,
 				12E20A4B1C0F4E88006ED093 /* GameViewController.swift in Sources */,
 				12E20A451C0F4E88006ED093 /* AppDelegate.swift in Sources */,
 			);
