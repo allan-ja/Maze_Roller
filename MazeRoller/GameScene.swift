@@ -14,6 +14,7 @@ class GameScene: SKScene {
  
     
     let playbutton = SKSpriteNode(imageNamed: "playbutton")
+    let logo = SKSpriteNode(imageNamed: "logo")
     var nameLabel: SKLabelNode!
 
     
@@ -21,7 +22,12 @@ class GameScene: SKScene {
         /* Setup your scene here */
         self.playbutton.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
         self.addChild(playbutton)
-        createTitleLabel()
+        
+        //createTitleLabel()
+        
+        self.logo.position = CGPointMake(CGRectGetMidX(self.frame) * 1,CGRectGetMaxY(self.frame) * 0.80)
+        self.addChild(logo)
+        
         self.backgroundColor = UIColor(red: 0.502, green: 0.851, blue: 1, alpha: 1.0)
     }
     
