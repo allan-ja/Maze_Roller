@@ -37,7 +37,7 @@ class GameScene: SKScene {
         for touch: AnyObject in touches {
             let location = touch.locationInNode(self)
             if self.nodeAtPoint(location) == self.playbutton {
-                let scene = MazeScene(size = self.size)
+                let scene = LevelSelectionScene(size = self.size)
                 let skView = self.view! as SKView
                 skView.ignoresSiblingOrder = true
                 scene.size = frame.size
