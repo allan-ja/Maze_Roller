@@ -117,7 +117,6 @@
 				8F8B346B1C122297007F4CD3 /* level1.txt */,
 				12817AE71C18520A009FBE5A /* level2.txt */,
 				12E20A441C0F4E88006ED093 /* AppDelegate.swift */,
-				124E22711C1972F8005BD7FE /* LoadingOverlay.swift */,
 				12E20A461C0F4E88006ED093 /* GameScene.sks */,
 				12E20A481C0F4E88006ED093 /* GameScene.swift */,
 				12CC8A6F1C13216D001C25AF /* MazeScene.swift */,
@@ -294,7 +293,6 @@
 				8FAD54E31C191304009AE5B1 /* LevelSelectionScene.swift in Sources */,
 				12E20A4B1C0F4E88006ED093 /* GameViewController.swift in Sources */,
 				12E20A451C0F4E88006ED093 /* AppDelegate.swift in Sources */,
-				124E22721C1972F8005BD7FE /* LoadingOverlay.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -43,7 +43,7 @@ class GameScene: SKScene {
                 scene.size = frame.size
                 scene.scaleMode = .AspectFit
                 //skView.presentScene(scene)
-                var transition = SKTransition.fadeWithDuration(5)
+                let transition = SKTransition.fadeWithDuration(5)
                 self.view?.presentScene(scene, transition: transition)
                 
             }
