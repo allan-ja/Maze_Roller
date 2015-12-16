@@ -63,6 +63,7 @@
 		12E20A781C0F5048006ED093 /* Supporting Files */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Supporting Files"; sourceTree = "<group>"; };
 		8F8B346B1C122297007F4CD3 /* level1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = level1.txt; path = ../level1.txt; sourceTree = "<group>"; };
 		8FAD54E21C191304009AE5B1 /* LevelSelectionScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelSelectionScene.swift; sourceTree = "<group>"; };
+		8FB748B91C21C2D300831D8B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +94,7 @@
 		12E20A381C0F4E88006ED093 = {
 			isa = PBXGroup;
 			children = (
+				8FB748B91C21C2D300831D8B /* .gitignore */,
 				12E20A431C0F4E88006ED093 /* MazeRoller */,
 				12E20A5C1C0F4E88006ED093 /* MazeRollerTests */,
 				12E20A671C0F4E88006ED093 /* MazeRollerUITests */,

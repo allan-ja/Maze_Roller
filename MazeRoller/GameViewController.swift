@@ -12,7 +12,11 @@ import CoreData
 
 class GameViewController: UIViewController {
 
-   
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        
+           }
     override func viewDidLoad() {
         super.viewDidLoad()
 

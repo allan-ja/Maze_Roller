@@ -69,9 +69,15 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     
     var currentLevel: String = "level1"
     
+    
     // MARK: - SKScene Functions
     override func didMoveToView(view: SKView) {
+        
         /* Setup scene here */
+        
+        if self.userData?.objectForKey("level") != nil {
+            print("present")
+        }
         
         createNodeLayers()
         createScene()
@@ -86,6 +92,9 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         
         motionManager = CMMotionManager()
         motionManager.startDeviceMotionUpdates()
+        
+        
+       // LoadingOverlay.shared.hideOverlayView()
         
     }
     
@@ -136,6 +145,10 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
     //HighScore
     
     func createHScoreLabel() {
+        if NSUserDefaults.standardUserDefaults().valueForKey("Highscore") == nil{
+            NSUserDefaults.standardUserDefaults().setInteger(0, forKey: "Highscore")
+        }
+        
         highScoreLabel = SKLabelNode (fontNamed: "Arial")
         highScoreLabel.text = "Highscore: \(NSUserDefaults.standardUserDefaults().integerForKey("Highscore"))"
         highScoreLabel.horizontalAlignmentMode = .Left
@@ -145,7 +158,7 @@ class MazeScene: SKScene, SKPhysicsContactDelegate {
         
         
         gameLayer.addChild(highScoreLabel)
-        
+
     }
     
     func updateHighScore(){

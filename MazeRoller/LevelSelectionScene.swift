@@ -21,6 +21,7 @@ class LevelSelectionScene: SKScene {
         static let spaceBetweenCases = CGFloat(230)
     }
     
+   
     
     override func didMoveToView(view: SKView) {
         
@@ -86,7 +87,9 @@ class LevelSelectionScene: SKScene {
                         scene.userData?.setObject(level as! String, forKey: "level")
                     }
                     
-                    skView.presentScene(scene)
+                    var transition = SKTransition.fadeWithDuration(5)
+                    self.view?.presentScene(scene, transition: transition)
+                    //skView.presentScene(scene)
                 }
             }
 
